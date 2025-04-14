@@ -1,144 +1,440 @@
-/* General App Container */
+:root {
+  --primary-color: #6200ee;
+  --primary-dark: #3700b3;
+  --primary-light: #bb86fc;
+  --secondary-color: #03dac6;
+  --background-color: #f5f5f5;
+  --surface-color: #ffffff;
+  --error-color: #b00020;
+  --text-color: #000000;
+  --text-secondary: #666666;
+  --priority-high: #dc3545;
+  --priority-medium: #ffc107;
+  --priority-low: #28a745;
+  --border-radius: 12px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+.dark-mode {
+  --primary-color: #bb86fc;
+  --primary-dark: #3700b3;
+  --primary-light: #6200ee;
+  --secondary-color: #03dac6;
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --error-color: #cf6679;
+  --text-color: #ffffff;
+  --text-secondary: #a0a0a0;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: var(--transition);
+}
+
 .App {
-  width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #eef2f9, #d0e2f2);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 1rem;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Main container */
-.homepage {
-  width: 100%;
-  max-width: 850px;
-}
-
-/* Form Header */
-.homepage_header {
-  background: #ffffff;
   padding: 2rem;
+}
+
+.homepage {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.homepage_header {
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
   margin-bottom: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+.header-top {
   display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  align-items: stretch;
-  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
-.homepage_header h1 {
-  font-size: 2.25rem;
-  margin-bottom: 0.5rem;
-  color: #0b57d0;
+.header-top h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-color);
 }
 
-/* Input Field */
-.homepage_header > input {
-  padding: 0.8rem 1.1rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.homepage_header > input:focus {
-  outline: none;
-  border-color: #0b57d0;
-  box-shadow: 0 0 8px rgba(11, 87, 208, 0.2);
-}
-
-/* Date Picker */
-.react-datetime-picker {
-  width: 100%;
-}
-
-.react-datetime-picker__wrapper {
-  border: 1px solid #ccc;
-  padding: 0.6rem;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.react-datetime-picker__wrapper:focus-within {
-  border-color: #0b57d0;
-  box-shadow: 0 0 8px rgba(11, 87, 208, 0.2);
-}
-
-/* Add Button */
-.homepage_header > .button {
-  background: #0b57d0;
-  color: #fff;
-  padding: 0.8rem 1.2rem;
-  border-radius: 10px;
+.theme-toggle {
+  background: none;
   border: none;
-  font-size: 1.05rem;
-  font-weight: 500;
+  color: var(--text-color);
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  transition: var(--transition);
 }
 
-.homepage_header > .button:hover {
-  background: #0947b0;
+.theme-toggle:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.search-filter-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  gap: 0.5rem;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  background: none;
+  color: var(--text-color);
+  font-size: 1rem;
+  outline: none;
+}
+
+.filter-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filter-box select {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  cursor: pointer;
+  outline: none;
+}
+
+.reminder-form {
+  background-color: var(--background-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+}
+
+.reminder-form input[type="text"] {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.select-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: var(--surface-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  gap: 0.5rem;
+}
+
+.select-wrapper select {
+  flex: 1;
+  border: none;
+  background: none;
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.date-picker-wrapper {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  background-color: var(--surface-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  gap: 0.5rem;
+}
+
+.date-picker {
+  flex: 1;
+  background: none !important;
+  border: none !important;
+}
+
+.date-picker input {
+  color: var(--text-color) !important;
+  background: none !important;
+  border: none !important;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.add-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.add-btn:hover {
+  background-color: var(--primary-dark);
   transform: translateY(-2px);
 }
 
-/* Reminder List */
-.homepage_body {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
+.delete-btn {
+  background-color: var(--error-color);
+  color: white;
 }
 
-/* Reminder Card */
+.delete-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.homepage_body {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
 .reminder_card {
-  background: #a57cd7;
-  border-radius: 20px;
+  background-color: var(--surface-color);
   padding: 1.5rem;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  transition: transform 0.3s ease;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border-left: 4px solid;
+  transition: var(--transition);
 }
 
 .reminder_card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.reminder_card h2,
-.reminder_card h3,
-.reminder_card p {
-  margin: 0;
-  font-size: 1rem;
-  color: #444;
-  font-weight: 500;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
-/* Delete Button */
-.reminder_card .button {
-  background: #e8dafb;
-  color: #7a3eb1;
-  padding: 0.7rem 1.2rem;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
+.category-tag, .priority-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  background-color: var(--background-color);
+}
+
+.category-tag.personal { color: #9c27b0; }
+.category-tag.work { color: #2196f3; }
+.category-tag.health { color: #4caf50; }
+.category-tag.shopping { color: #ff9800; }
+
+.priority-tag.high { color: var(--priority-high); }
+.priority-tag.medium { color: var(--priority-medium); }
+.priority-tag.low { color: var(--priority-low); }
+
+.reminder_card h2 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.reminder-details {
+  margin-bottom: 1rem;
+}
+
+.reminder-details h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.reminder-details p {
+  color: var(--text-color);
+}
+
+.recurring-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s;
+  color: var(--primary-color);
+  font-size: 0.875rem;
 }
 
-.reminder_card .button:hover {
-  background: #04e007;
-  transform: scale(1.05);
+.no-reminders {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
+  color: var(--text-secondary);
+}
+
+.no-reminders svg {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-content p {
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .App {
+    padding: 1rem;
+  }
+
+  .homepage_header {
+    padding: 1rem;
+  }
+
+  .search-filter-container {
+    flex-direction: column;
+  }
+
+  .filter-box {
+    flex-direction: column;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .select-wrapper,
+  .date-picker-wrapper {
+    width: 100%;
+  }
+
+  .homepage_body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* React DateTime Picker Overrides */
+.react-datetime-picker__wrapper {
+  border: none !important;
+}
+
+.react-datetime-picker__inputGroup {
+  padding: 0.25rem;
+}
+
+.react-datetime-picker__clock {
+  background-color: var(--surface-color) !important;
+}
+
+.react-datetime-picker__calendar {
+  background-color: var(--surface-color) !important;
+}
+
+.react-calendar {
+  background-color: var(--surface-color) !important;
+  border: none !important;
+  box-shadow: var(--box-shadow);
+}
+
+.react-calendar button {
+  color: var(--text-color) !important;
+}
+
+.react-calendar__tile--active {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.react-clock {
+  background-color: var(--surface-color) !important;
+}
+
+.react-clock__face {
+  border-color: var(--text-color) !important;
+}
+
+.react-clock__hand__body {
+  background-color: var(--primary-color) !important;
+}
+
+.Toastify__toast {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+}
+
+.Toastify__progress-bar {
+  background-color: var(--primary-color) !important;
 }
