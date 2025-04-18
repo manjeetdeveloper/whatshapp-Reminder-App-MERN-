@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import './LandingPage.css';
-import { FaBell, FaUser, FaLock, FaEnvelope, FaTimes, FaUserShield } from 'react-icons/fa';
+// import logo from '../src/assets/TAsko.png';
+import { FaBell, FaUser, FaLock, FaEnvelope, FaTimes, FaUserShield, FaMobile } from 'react-icons/fa';
 
-function LandingPage() {
+function LandingPage() { 
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,6 +24,25 @@ function LandingPage() {
       ...formData,
       [e.target.name]: e.target.value
     });
+    setIsTyping(true);
+    setIsPassword(e.target.name === 'password');
+    
+    // Clear typing state after 1 second of no typing
+    const timeout = setTimeout(() => {
+      setIsTyping(false);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  };
+
+  const handleFocus = (e) => {
+    setIsTyping(true);
+    setIsPassword(e.target.name === 'password');
+  };
+
+  const handleBlur = () => {
+    setIsTyping(false);
+    setIsPassword(false);
   };
 
   const handleLogin = async (e) => {
@@ -73,17 +95,16 @@ function LandingPage() {
 
       const res = await axios.post('http://localhost:9000/register', signupData);
       
-      if (res.data.token && res.data.user) {
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-        
-        toast.success('Registration successful!');
-        
-        if (res.data.user.role === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate('/app');
-        }
+      if (res.data.success || res.data.user) {
+        toast.success('Registration successful! Please login.');
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          role: 'user'
+        });
+        setShowSignup(false);
+        setShowLogin(true);
       } else {
         toast.error('Invalid response from server');
       }
@@ -93,12 +114,31 @@ function LandingPage() {
     }
   };
 
+  const BearIllustration = () => (
+    <div className={`bear-container ${isTyping ? 'typing' : ''} ${isPassword ? 'password-input' : ''}`}>
+      <div className="bear-ears">
+        <div className="ear left"></div>
+        <div className="ear right"></div>
+      </div>
+      <div className="bear-face">
+        <div className="bear-eyes">
+          <div className="eye left"></div>
+          <div className="eye right"></div>
+        </div>
+        <div className="bear-nose"></div>
+        <div className="bear-muzzle"></div>
+      </div>
+      <div className="bear-typing"></div>
+    </div>
+  );
+
   return (
     <div className="landing-page">
       <nav className="landing-nav">
         <div className="nav-brand">
           <FaBell className="brand-icon" />
-          <span>Remind Me</span>
+          {/* <span><img src={logo} ></img></span> */}
+          <span>Taskoo</span>
         </div>
         <div className="nav-buttons">
           <button className="auth-btn" onClick={() => setShowLogin(true)}>Login</button>
@@ -106,41 +146,47 @@ function LandingPage() {
         </div>
       </nav>
 
-      <div className="landing-content">
-        <div className="hero-section">
-          <div className="hero-text">
-            <h1>Never Miss Important Moments</h1>
-            <p>Stay organized and focused with our smart reminder system. Get notifications via WhatsApp and voice calls.</p>
-            <button className="cta-button" onClick={() => setShowSignup(true)}>
-              Get Started
-            </button>
-          </div>
-          <div className="hero-image">
-            {/* Add your hero image here */}
-          </div>
+      <section className="hero-section">
+        <div className="hero-text">
+          <h1>Never Miss Important Moments</h1>
+          <p>Stay organized and focused with our smart reminder system. Get notifications via WhatsApp and voice calls.</p>
+          <button className="cta-button" onClick={() => setShowSignup(true)}>Get Started</button>
         </div>
+      </section>
 
-        <div className="features-section">
-          <h2>Why Choose Remind Me?</h2>
-          <div className="features-grid">
-            <div className="feature-card">
+      <section className="features-section">
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">
               <FaBell />
-              <h3>Smart Notifications</h3>
-              <p>Get reminders via WhatsApp and voice calls</p>
             </div>
-            <div className="feature-card">
-              <FaUser />
-              <h3>Personal Dashboard</h3>
-              <p>Manage all your reminders in one place</p>
+            <h3 className="feature-title">Smart Notifications</h3>
+            <p className="feature-description">
+              Never miss important events with our intelligent notification system that adapts to your schedule and priorities
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">
+              <FaMobile />
             </div>
-            <div className="feature-card">
+            <h3 className="feature-title">Cross-Platform Access</h3>
+            <p className="feature-description">
+              Access your reminders from any device - mobile, tablet, or desktop. Stay synchronized everywhere you go
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">
               <FaLock />
-              <h3>Secure & Private</h3>
-              <p>Your data is encrypted and secure</p>
             </div>
+            <h3 className="feature-title">Secure & Private</h3>
+            <p className="feature-description">
+              Your reminders are encrypted and protected. We prioritize your privacy and data security
+            </p>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Login Modal */}
       {showLogin && (
@@ -150,6 +196,7 @@ function LandingPage() {
               <FaTimes />
             </button>
             <h2>Welcome Back!</h2>
+            <BearIllustration />
             <form onSubmit={handleLogin}>
               <div className="form-group">
                 <FaEnvelope />
@@ -159,6 +206,8 @@ function LandingPage() {
                   placeholder="Email"
                   value={formData.email}
                   onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                   required
                 />
               </div>
@@ -170,22 +219,16 @@ function LandingPage() {
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                   required
                 />
               </div>
               <button type="submit" className="submit-btn">Login</button>
             </form>
-            <p className="switch-auth">
-              Don't have an account?{' '}
-              <button
-                onClick={() => {
-                  setShowLogin(false);
-                  setShowSignup(true);
-                }}
-              >
-                Sign Up
-              </button>
-            </p>
+            <div className="switch-auth">
+              <p>Don't have an account? <button onClick={() => { setShowLogin(false); setShowSignup(true); }}>Sign Up</button></p>
+            </div>
           </div>
         </div>
       )}
@@ -198,6 +241,7 @@ function LandingPage() {
               <FaTimes />
             </button>
             <h2>Create Account</h2>
+            <BearIllustration />
             <form onSubmit={handleSignup}>
               <div className="form-group">
                 <FaUser />
@@ -207,6 +251,8 @@ function LandingPage() {
                   placeholder="Full Name"
                   value={formData.name}
                   onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                   required
                 />
               </div>
@@ -218,6 +264,8 @@ function LandingPage() {
                   placeholder="Email"
                   value={formData.email}
                   onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                   required
                 />
               </div>
@@ -229,16 +277,19 @@ function LandingPage() {
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                   required
                 />
               </div>
               <div className="form-group">
                 <FaUserShield />
-                <select
-                  name="role"
-                  value={formData.role}
+                <select 
+                  name="role" 
+                  value={formData.role} 
                   onChange={handleChange}
-                  required
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                 >
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
@@ -246,17 +297,9 @@ function LandingPage() {
               </div>
               <button type="submit" className="submit-btn">Sign Up</button>
             </form>
-            <p className="switch-auth">
-              Already have an account?{' '}
-              <button
-                onClick={() => {
-                  setShowSignup(false);
-                  setShowLogin(true);
-                }}
-              >
-                Login
-              </button>
-            </p>
+            <div className="switch-auth">
+              <p>Already have an account? <button onClick={() => { setShowSignup(false); setShowLogin(true); }}>Login</button></p>
+            </div>
           </div>
         </div>
       )}
